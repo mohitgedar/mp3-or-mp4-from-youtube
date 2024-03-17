@@ -1,4 +1,4 @@
-# mp3-or-mp4-from-youtube
+# mp3-or-mp4-from-youtube(only for pc )
 - This is a simple extension project which we can use to download youtube files as mp3 or mp4 files
 ## How to use ?
 1. go to the given line https://github.com/mohitgedar/mp3-or-mp4-from-youtube

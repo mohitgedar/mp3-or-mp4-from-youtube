@@ -28,23 +28,28 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         chrome.tabs.query({url: urlToSwitchTo}, function(tabs) {
             if (tabs.length > 0) {
                 // Tab with the specified URL is already open, switch to it
-                chrome.tabs.update(tabs[0].id, {active: true}, function() {
+                chrome.tabs.update(tabs[0].id, {active: true}, function(second) {
                     // Send message to the content script of the new tab
-                    chrome.tabs.executeScript(tabs[0].id, {file: "contentScript.js"}, function() {
-                        chrome.tabs.sendMessage(tabs[0].id, { type: "urlData", url: tabUrl, selected:selection });
+                    chrome.tabs.executeScript(second.id, {file: "contentScript.js"}, function() {
+                        chrome.tabs.sendMessage(second.id, { type: "urlData", url: tabUrl, selected:selection ,whathappened:"updated"});
                     });
                 });
             } else {
                 // Tab with the specified URL is not open, create a new tab
                 chrome.tabs.create({url: urlToSwitchTo}, function(newTab) {
                     // Send message to the content script of the new tab
+                    setTimeout(() => {
                         chrome.tabs.executeScript(newTab.id, {file: "contentScript.js"}, function() {
-                            chrome.tabs.sendMessage(newTab.id, { type: "urlData", url: tabUrl , selected:selection });
-                        });
+                            setTimeout(() => {
+                                 chrome.tabs.sendMessage(newTab.id, { type: "urlData", url: tabUrl , selected:selection ,whathappened:"created"});
+                               }, 1500);
+                       });
+                    }, 1500);
+                    
                  });
             }
         });
-    }, 2000);
+    }, 4000);
     
    
 });
