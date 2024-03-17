@@ -1,0 +1,31 @@
+{
+    "name":"Youtube to mp3",
+    "version":"0.1",
+    "manifest_version":2,
+    "browser_action":{
+        "default_popup":"popup.html",
+        "default_icon":"logo96.png"
+    },
+    "icons":{
+        "96":"logo96.png",
+        "64":"logo64.png"
+    },
+    "permissions": [
+        "tabs",               
+        "activeTab",           
+        "storage",
+        "https://utomp3.com/*",
+        "https://www.youtube.com/*"           
+    ],
+    "content_scripts": [
+      {
+        "matches": ["https://utomp3.com/*"], 
+        "js": ["contentScript.js"],
+        "run_at": "document_idle"
+      }
+    ],
+    "background": {
+        "scripts": ["script.js"],
+        "persistent": true
+      }
+}
