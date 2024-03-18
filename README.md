@@ -13,3 +13,4 @@
 
 ### # sometime it may not work , for the first time ,so go back to youtube page and click the extension again
  
+#### Note:- user should download copyrighted content at their own discretion , we don't have any libality to it .
