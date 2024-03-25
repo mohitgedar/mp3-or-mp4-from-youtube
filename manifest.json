@@ -3,12 +3,12 @@
     "version":"0.1",
     "manifest_version":2,
     "browser_action":{
-        "default_popup":"popup.html",
-        "default_icon":"logo96.png"
+        "default_popup":"html and css/popup.html",
+        "default_icon":"img/logo96.png"
     },
     "icons":{
-        "96":"logo96.png",
-        "64":"logo64.png"
+        "96":"img/logo96.png",
+        "64":"img/logo64.png"
     },
     "permissions": [
         "tabs",               
@@ -20,12 +20,12 @@
     "content_scripts": [
       {
         "matches": ["https://utomp3.com/*"], 
-        "js": ["contentScript.js"],
+        "js": ["scripts/contentScript.js"],
         "run_at": "document_idle"
       }
     ],
     "background": {
-        "scripts": ["script.js"],
+        "scripts": ["scripts/script.js"],
         "persistent": true
       }
 }
