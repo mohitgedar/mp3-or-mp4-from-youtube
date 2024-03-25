@@ -8,8 +8,8 @@
 5. toggle developer option and then click on "load unpacked" button
 6. now locate that downloaded folder ,i say folder and open 
 7. go to details of the new extension and pin it to toolbar
-8. now whenever you are on the youtube page click on the extension you get option for mp3 or mp4 ,default is mp3
-9. now your file will get downloaded.
+8. now whenever you are on the youtube page click on the extension you get option for mp3 or mp4 ,default is mp3,if you don't select any option after few sec ,it goes with mp3 or you can choose otherwise.
+9. now your file will get downloaded(be paitent).
 
 ### # sometime it may not work , for the first time ,so go back to youtube page and click the extension again
  
