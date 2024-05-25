@@ -89,7 +89,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     setTimeout(() => {
                         document.getElementById('asuccess').nextElementSibling.click();
                         chrome.runtime.sendMessage({ type: "urlData", url: message.url});
-                    }, 5000); 
+                    }, 5000); //time to wait before sending message to swtich back 
                 }
             }        
         }
