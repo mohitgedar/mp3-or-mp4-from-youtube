@@ -13,4 +13,4 @@
 
 ### # It may not work for the first time , so go back to youtube page and click the extension again (when both tabs are open)
  
-#### Note:- user should download copyrighted content at their own discretion , we don't have any libality to it .We don't recommend downloading copyrighted content , this extension is for educational purpose only.
+## Note:- user should download copyrighted content at their own discretion , we don't have any libality to it .We don't recommend downloading copyrighted content , this extension is for educational purpose only.
