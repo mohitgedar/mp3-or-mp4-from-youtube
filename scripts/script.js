@@ -1,9 +1,11 @@
 // this is the main file , this is the start of the extension, if we want to do anything on the website we can't do that from here , we need content scripts for that , that run in the background ,they can work on the pages. 
 // as soon as the extension is clicked mainfunction is called .
-
+let messagesent=false;
 mainfunction();
+ 
 
 function mainfunction(){
+    messagesent=false;
     let selection='mp3'; // for default selection
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');//this gets us the reference to both mp3 and mp4 checkbox
 
@@ -45,7 +47,7 @@ function mainfunction(){
                     chrome.tabs.update(tabs[0].id, {active: true}, function(second) {
                         //now we inject the script of this tab using executeScript , and in execution we send message to this script to use , such as file type that we want to download ,url of youtube to which we will switch back
                         chrome.tabs.executeScript(second.id, {file: "scripts/contentScript.js"}, function() {//first we executed 
-                            chrome.tabs.sendMessage(second.id, { type: "urlData", url: tabUrl, selected:selection ,whathappened:"updated"});
+                            chrome.tabs.sendMessage(second.id, { type: "urlData", url: tabUrl, selected:selection ,messagesent:messagesent});
                         });
                     });
                 } else {
@@ -55,7 +57,7 @@ function mainfunction(){
                         setTimeout(() => {
                             chrome.tabs.executeScript(newTab.id, {file: "scripts/contentScript.js"}, function() {
                                 setTimeout(() => {
-                                     chrome.tabs.sendMessage(newTab.id, { type: "urlData", url: tabUrl , selected:selection ,whathappened:"created"});
+                                     chrome.tabs.sendMessage(newTab.id, { type: "urlData", url: tabUrl , selected:selection ,messagesent:messagesent});
                                    }, 1500);//this timeout is to wair for executeScript to properly inject the script and then send message to it using sendMessage
                            });
                         }, 1500);// this timeout is to wait for creation of tab
@@ -76,16 +78,22 @@ function mainfunction(){
 //this is to listen for messages from injected scripts to work accordingly
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     // if message type is urlData means its from content script  and the download has been intitated now this message is so that we can switch back to the youtube website
+    messagesent=message.messagesent;
     if (message.type === "urlData") {
         chrome.tabs.query({url: message.url}, function(tabs) {
             if (tabs.length > 0) {
                 // Tab with the specified URL is already open, switch to it and the inject its script ytubes and send a message to it changetrack   
                 chrome.tabs.update(tabs[0].id, {active: true}, function(second) {
-                    ////below injects content script of the youtube after the tab is made active by above line
-                    chrome.tabs.executeScript(second.id, {file: "scripts/ytube.js"}, function() {
-                        //below Sends message to the content script of the youtube
-                        chrome.tabs.sendMessage(second.id, { type: "changetrack"});
-                    });
+                    // //below injects content script of the youtube after the tab is made active by above line
+                    // if(messagesent)//this condition makes sure that only once the script executes and message is send , see the script executes first , it gets injected, then the code in function is executed , where message gets sent.
+                    //     {
+                            
+                    //         chrome.tabs.executeScript(second.id, {file: "scripts/ytube.js"}, function() {
+                    //         //below Sends message to the content script of the youtube
+                    //         chrome.tabs.sendMessage(second.id, { type: "changetrack" , messagesent:messagesent});
+                    //         messagesent=false;
+                    //         });
+                    //     }
                 });
             }
            
@@ -93,7 +101,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         });
     }
     //this is to run the extension in loop , if ytube sends message changetrack , it means we want to run the extension again
-    if(message.type==="changetrack"){
-        mainfunction();
-    }
+    // if(message.type==="changetrack"){
+    //     mainfunction();
+    // }
 });

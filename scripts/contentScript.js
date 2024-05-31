@@ -2,8 +2,9 @@
 // Listen for messages from the background script
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     // Check if the message contains URL data
-
-    
+    messagesent=message.messagesent;
+    let timeoutid=[];
+   
     download();
     
     function download(){
@@ -14,17 +15,17 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             // Use the URL data in the new tab
             document.getElementById('s-box').value=message.url;
     
-            setTimeout(() => {
+            timeoutid.push(setTimeout(() => {
                 document.getElementById('btn-start').click();
-            }, 1000);
+            }, 1000));
     
-            setTimeout(() => {
+            timeoutid.push(setTimeout(() => {
                 select320();
                 function select320(){
                     if(document.getElementById('formatSelect')===null){
-                        setTimeout(() => {
+                        timeoutid.push(setTimeout(() => {
                             select320();
-                        }, 200);
+                        }, 200));
                         
                     }
                     else
@@ -54,16 +55,16 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     }
                 }
               
-            }, 1500);
+            }, 1500));
     
-            setTimeout(() => {
+            timeoutid.push(setTimeout(() => {
                 convert();
                 function convert(){
                     if(document.getElementById('btn-start-convert')===null)
                     {
-                        setTimeout(() => {
+                        timeoutid.push(setTimeout(() => {
                             convert();
-                        }, 200);
+                        }, 200));
                     }
                     else{
                         document.getElementById('btn-start-convert').click();
@@ -71,16 +72,16 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     
                 }
                
-            }, 2200);
+            }, 2200));
     
             checkdownload();
             function checkdownload(){
                 
                 if(document.getElementById("asuccess")===null)
                 {
-                    setTimeout(() => {
+                    timeoutid.push(setTimeout(() => {
                         checkdownload();
-                    }, 200);
+                    }, 200));
                 }
                 else
                 {
@@ -88,7 +89,14 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     document.getElementById('asuccess').click();
                     setTimeout(() => {
                         document.getElementById('asuccess').nextElementSibling.click();
-                        chrome.runtime.sendMessage({ type: "urlData", url: message.url});
+                        if(!messagesent)
+                            {
+                                message.messagesent=true;
+                                timeoutid.forEach(id=>clearTimeout(id));
+                                timeoutid=[];
+                                chrome.runtime.sendMessage({ type: "urlData", url: message.url ,messagesent:message.messagesent});
+                            }
+                            
                     }, 5000); //time to wait before sending message to swtich back 
                 }
             }        
